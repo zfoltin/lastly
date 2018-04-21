@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Lastly</string>
+    <string name="search_hint">Search last.fm by artist</string>
+    <string name="search_empty_view_text">Use the search button in the toolbar to search last.fm by artist</string>
 </resources>
