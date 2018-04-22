@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <import type="uk.co.zedeff.lastly.domain.details.Status" />
+
+        <variable
+            name="viewModel"
+            type="uk.co.zedeff.lastly.domain.details.ArtistDetailViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".domain.main.MainActivity">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimary"
+            android:elevation="4dp"
+            android:minHeight="?attr/actionBarSize"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/toolbar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            app:title="@string/artist_details_title"
+            app:titleTextColor="@color/primaryTextColor" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateOnly="true"
+            android:indeterminateTint="@color/secondaryColor"
+            android:visibility="@{viewModel.status == Status.Loading ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:contentDescription="@string/artist_image"
+                    android:src="@{viewModel.artistDetails.imageUrl}" />
+
+                <TextView
+                    android:id="@+id/name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginTop="32dp"
+                    android:gravity="center"
+                    android:text="@{viewModel.artistDetails.name}"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="20sp"
+                    android:visibility="@{viewModel.status == Status.Loaded ? View.VISIBLE : View.GONE}"
+                    tools:text="Artist Name" />
+
+                <TextView
+                    android:id="@+id/bioSummary"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{viewModel.artistDetails.bio.published}"
+                    android:textColor="@color/secondaryTextColor"
+                    android:textSize="12sp"
+                    android:visibility="@{viewModel.status == Status.Loaded ? View.VISIBLE : View.GONE}"
+                    tools:text="published" />
+
+                <TextView
+                    android:id="@+id/bioContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="@{viewModel.artistDetails.bio.content}"
+                    android:textColor="@color/secondaryTextColor"
+                    android:visibility="@{viewModel.status == Status.Loaded ? View.VISIBLE : View.GONE}"
+                    tools:text="Bio content" />
+            </LinearLayout>
+        </ScrollView>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

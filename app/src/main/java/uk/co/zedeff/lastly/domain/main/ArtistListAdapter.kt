@@ -7,9 +7,19 @@ import android.view.ViewGroup
 import uk.co.zedeff.lastly.BR
 import uk.co.zedeff.lastly.databinding.SearchResultRowBinding
 
+
+interface OnArtistSelectedListener {
+    fun onArtistSelected(artist: ArtistViewModel)
+}
+
 class ArtistListAdapter : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolder>() {
 
-    private var artists: Array<ArtistViewModel> = arrayOf()
+    private var artists: Array<ArtistViewModel> = emptyArray()
+    private var listener: OnArtistSelectedListener? = null
+
+    fun setListener(listener: OnArtistSelectedListener?) {
+        this.listener = listener
+    }
 
     fun update(artists: Array<ArtistViewModel>) {
         this.artists = artists
@@ -17,7 +27,7 @@ class ArtistListAdapter : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolde
     }
 
     override fun onBindViewHolder(holder: ArtistViewHolder, position: Int) {
-        holder.bind(artists[position])
+        holder.bind(artists[position], listener)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ArtistViewHolder {
@@ -30,9 +40,10 @@ class ArtistListAdapter : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolde
     override fun getItemCount(): Int = artists.size
 
     class ArtistViewHolder(private val binding: ViewDataBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(artist: ArtistViewModel) {
+        fun bind(artist: ArtistViewModel, listener: OnArtistSelectedListener?) {
             binding.setVariable(BR.artist, artist)
             binding.executePendingBindings()
+            itemView.setOnClickListener { listener?.onArtistSelected(artist) }
         }
     }
 }

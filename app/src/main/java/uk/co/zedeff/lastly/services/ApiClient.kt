@@ -14,13 +14,20 @@ import uk.co.zedeff.lastly.BuildConfig
 
 data class ArtistSearchResult(val results: ArtistSearchResults)
 data class ArtistSearchResults(@SerializedName("artistmatches") val artistMatches: ArtistMatches)
-data class ArtistMatches(@Suppress("ArrayInDataClass") val artist: Array<Artist>)
-data class Artist(val name: String, val listeners: String, val streamable: String, val url: String, @Suppress("ArrayInDataClass") val image: Array<ArtistImage>)
+data class ArtistMatches(val artist: List<Artist>)
+data class Artist(val name: String, val listeners: String, val streamable: String, val url: String, val image: List<ArtistImage>)
 data class ArtistImage(@SerializedName("#text") val text: String, val size: String)
+
+data class ArtistInfoResult(val artist: ArtistInfo)
+data class ArtistInfo(val name: String, val image: List<ArtistImage>, val bio: ArtistBio)
+data class ArtistBio(val published: String, val content: String)
 
 interface ApiService {
     @GET("2.0/?method=artist.search&api_key=5f2007448583f41dc8f211e455d90b1b&format=json")
     fun artistSearch(@Query("artist") artist: String): Single<ArtistSearchResult>
+
+    @GET("2.0/?method=artist.getinfo&api_key=5f2007448583f41dc8f211e455d90b1b&format=json")
+    fun artistInfo(@Query("artist") artist: String): Single<ArtistInfoResult>
 }
 
 class ApiClient {

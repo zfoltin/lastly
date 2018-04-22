@@ -4,4 +4,5 @@
     <string name="search_empty_view_text">Use the search button in the toolbar to search last.fm by artist</string>
     <string name="artist_image">Artist image</string>
     <string name="listeners_text">Listeners: %s</string>
+    <string name="artist_details_title">Artist details</string>
 </resources>
