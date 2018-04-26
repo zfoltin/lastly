@@ -5,9 +5,11 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.ActivityOptionsCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.view.Menu
+import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import uk.co.zedeff.lastly.R
@@ -36,8 +38,13 @@ class MainActivity : BaseActivity() {
 
     private fun setItemSelectedListener() {
         adapter.setListener(object : OnArtistSelectedListener {
-            override fun onArtistSelected(artist: ArtistViewModel) {
-                startActivity(ArtistDetailActivity.newIntent(this@MainActivity, artist.name))
+            override fun onArtistSelected(artist: ArtistViewModel, artistImageView: View, artistNameView: View) {
+                val intent = ArtistDetailActivity.newIntent(this@MainActivity, artist.name, artist.imageUrl)
+                val options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        this@MainActivity,
+                        android.support.v4.util.Pair(artistImageView, "${artist.name}-image"),
+                        android.support.v4.util.Pair(artistNameView, artist.name))
+                startActivity(intent, options.toBundle())
             }
         })
     }

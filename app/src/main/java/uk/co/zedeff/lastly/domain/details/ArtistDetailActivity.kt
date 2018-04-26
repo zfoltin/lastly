@@ -10,16 +10,19 @@ import uk.co.zedeff.lastly.R
 import uk.co.zedeff.lastly.databinding.ActivityArtistDetailBinding
 import uk.co.zedeff.lastly.view.BaseActivity
 
+
 class ArtistDetailActivity : BaseActivity() {
 
     private val viewModel = ArtistDetailViewModel()
 
     companion object {
         private const val EXTRA_ARTIST_NAME = "artist_name"
+        private const val EXTRA_ARTIST_IMAGE_URL = "artist_image_url"
 
-        fun newIntent(context: Context, artistName: String): Intent {
+        fun newIntent(context: Context, artistName: String, artistImageUrl: String): Intent {
             val intent = Intent(context, ArtistDetailActivity::class.java)
             intent.putExtra(EXTRA_ARTIST_NAME, artistName)
+            intent.putExtra(EXTRA_ARTIST_IMAGE_URL, artistImageUrl)
             return intent
         }
     }
@@ -27,12 +30,16 @@ class ArtistDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val artistName = intent.getStringExtra(ArtistDetailActivity.EXTRA_ARTIST_NAME)
+        val artistImageUrl = intent.getStringExtra(ArtistDetailActivity.EXTRA_ARTIST_IMAGE_URL)
+        viewModel.initWith(artistName, artistImageUrl)
+
         val binding: ActivityArtistDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_artist_detail)
         binding.viewModel = viewModel
+        binding.artistImage.transitionName = "$artistName-image"
+        binding.artistName.transitionName = artistName
 
         setSupportActionBar(findViewById(R.id.toolbar))
-
-        val artistName = intent.getStringExtra(ArtistDetailActivity.EXTRA_ARTIST_NAME)
 
         disposables.add(viewModel.loadInfo(artistName)
                 .subscribeOn(Schedulers.io())

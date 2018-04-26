@@ -1,15 +1,20 @@
 package uk.co.zedeff.lastly.domain.main
 
 import android.databinding.ViewDataBinding
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import uk.co.zedeff.lastly.BR
+import uk.co.zedeff.lastly.R
 import uk.co.zedeff.lastly.databinding.SearchResultRowBinding
 
 
 interface OnArtistSelectedListener {
-    fun onArtistSelected(artist: ArtistViewModel)
+    fun onArtistSelected(artist: ArtistViewModel, artistImageView: View, artistNameView: View)
 }
 
 class ArtistListAdapter : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolder>() {
@@ -43,7 +48,11 @@ class ArtistListAdapter : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolde
         fun bind(artist: ArtistViewModel, listener: OnArtistSelectedListener?) {
             binding.setVariable(BR.artist, artist)
             binding.executePendingBindings()
-            itemView.setOnClickListener { listener?.onArtistSelected(artist) }
+            val artistImageView = binding.root.findViewById<ImageView>(R.id.artist_image)
+            val artistNameView = binding.root.findViewById<TextView>(R.id.artist_name)
+            ViewCompat.setTransitionName(artistImageView, "${artist.name}-image")
+            ViewCompat.setTransitionName(artistNameView, artist.name)
+            itemView.setOnClickListener { listener?.onArtistSelected(artist, artistImageView, artistNameView) }
         }
     }
 }
