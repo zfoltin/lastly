@@ -11,7 +11,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 import uk.co.zedeff.lastly.BuildConfig
 
-
 data class ArtistSearchResult(val results: ArtistSearchResults)
 data class ArtistSearchResults(@SerializedName("artistmatches") val artistMatches: ArtistMatches)
 data class ArtistMatches(val artist: List<Artist>)
@@ -23,10 +22,10 @@ data class ArtistInfo(val name: String, val image: List<ArtistImage>, val bio: A
 data class ArtistBio(val published: String, val content: String)
 
 interface ApiService {
-    @GET("2.0/?method=artist.search&api_key=5f2007448583f41dc8f211e455d90b1b&format=json")
+    @GET("2.0/?method=artist.search&api_key=5abe1e36c731df9fe52f884ce99455ec&format=json")
     fun artistSearch(@Query("artist") artist: String): Single<ArtistSearchResult>
 
-    @GET("2.0/?method=artist.getinfo&api_key=5f2007448583f41dc8f211e455d90b1b&format=json")
+    @GET("2.0/?method=artist.getinfo&api_key=5abe1e36c731df9fe52f884ce99455ec&format=json")
     fun artistInfo(@Query("artist") artist: String): Single<ArtistInfoResult>
 }
 

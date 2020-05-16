@@ -12,13 +12,11 @@ import uk.co.zedeff.lastly.BR
 import uk.co.zedeff.lastly.R
 import uk.co.zedeff.lastly.databinding.SearchResultRowBinding
 
-
 interface OnArtistSelectedListener {
     fun onArtistSelected(artist: ArtistViewModel, artistImageView: View, artistNameView: View)
 }
 
 class ArtistListAdapter : RecyclerView.Adapter<ArtistListAdapter.ArtistViewHolder>() {
-
     private var artists: Array<ArtistViewModel> = emptyArray()
     private var listener: OnArtistSelectedListener? = null
 

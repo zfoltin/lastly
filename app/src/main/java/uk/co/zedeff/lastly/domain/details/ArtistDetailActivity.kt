@@ -5,14 +5,11 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import uk.co.zedeff.lastly.R
 import uk.co.zedeff.lastly.databinding.ActivityArtistDetailBinding
 import uk.co.zedeff.lastly.view.BaseActivity
 
-
 class ArtistDetailActivity : BaseActivity() {
-
     private val viewModel = ArtistDetailViewModel()
 
     companion object {
@@ -30,8 +27,8 @@ class ArtistDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val artistName = intent.getStringExtra(ArtistDetailActivity.EXTRA_ARTIST_NAME)
-        val artistImageUrl = intent.getStringExtra(ArtistDetailActivity.EXTRA_ARTIST_IMAGE_URL)
+        val artistName = intent.getStringExtra(EXTRA_ARTIST_NAME)
+        val artistImageUrl = intent.getStringExtra(EXTRA_ARTIST_IMAGE_URL)
         viewModel.initWith(artistName, artistImageUrl)
 
         val binding: ActivityArtistDetailBinding = DataBindingUtil.setContentView(this, R.layout.activity_artist_detail)
@@ -42,7 +39,6 @@ class ArtistDetailActivity : BaseActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         disposables.add(viewModel.loadInfo(artistName)
-                .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ }, this::showError))
     }

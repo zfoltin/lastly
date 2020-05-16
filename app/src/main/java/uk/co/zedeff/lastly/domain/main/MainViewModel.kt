@@ -2,6 +2,7 @@ package uk.co.zedeff.lastly.domain.main
 
 import android.databinding.ObservableField
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import uk.co.zedeff.lastly.services.ApiClient
 import uk.co.zedeff.lastly.services.ApiService
 
@@ -20,10 +21,11 @@ class MainViewModel(private val apiClient: ApiService = ApiClient().apiClient) {
     fun searchArtist(artist: String): Single<Array<ArtistViewModel>> {
         status.set(Status.LOADING)
         return apiClient.artistSearch(artist)
+                .subscribeOn(Schedulers.io())
                 .retry(1)
                 .map {
                     it.results.artistMatches.artist
-                            .map { ArtistViewModel(it.name, it.image[3].text, it.listeners) }.toTypedArray()
+                            .map { artist -> ArtistViewModel(artist.name, artist.image[3].text, artist.listeners) }.toTypedArray()
                 }
                 .doOnEvent { _, _ -> status.set(Status.LOADED) }
     }

@@ -11,16 +11,13 @@ import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.View
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import uk.co.zedeff.lastly.R
 import uk.co.zedeff.lastly.R.layout.activity_main
 import uk.co.zedeff.lastly.databinding.ActivityMainBinding
 import uk.co.zedeff.lastly.domain.details.ArtistDetailActivity
 import uk.co.zedeff.lastly.view.BaseActivity
 
-
 class MainActivity : BaseActivity() {
-
     private val viewModel = MainViewModel()
     private val adapter = ArtistListAdapter()
 
@@ -68,7 +65,6 @@ class MainActivity : BaseActivity() {
             val query = intent.getStringExtra(SearchManager.QUERY)
 
             disposables.add(viewModel.searchArtist(query)
-                    .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ adapter.update(it) }, this::showError))
         }
